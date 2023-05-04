@@ -8,11 +8,13 @@ set(HEADERS
     include/cpp-utils/scope_guard.hpp
     include/cpp-utils/hexdump.hpp
     include/cpp-utils/stringutils.hpp
+    include/cpp-utils/base64.hpp
 )
 
 set(SOURCES
     logging.cpp
     loggingstdout.cpp
+    base64.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})

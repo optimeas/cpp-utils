@@ -8,6 +8,7 @@ set(SOURCES
     scope_guard_tests.cpp
     hexdump_tests.cpp
     stringutils_tests.cpp
+    base64_tests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
