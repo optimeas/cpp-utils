@@ -4,6 +4,7 @@
 #include <cctype>
 #include <locale>
 #include <sstream>
+#include <vector>
 
 namespace cu
 {
@@ -78,6 +79,48 @@ std::string simpleCase(std::string_view text)
     }
 
     return result.str();
+}
+
+template<typename T>
+std::vector<T> vectorFromHex(std::string_view hexString)
+{
+    std::vector<T> out;
+    out.resize((hexString.length() +1)/ 2);
+
+    T *result = static_cast<T *>(out.data() + out.size());
+
+    bool odd_digit = true;
+    for(int i = hexString.size() - 1; i >= 0; --i)
+    {
+        int ch = hexString.at(i);
+        int tmp;
+        if (ch >= '0' && ch <= '9')
+            tmp = ch - '0';
+        else if (ch >= 'a' && ch <= 'f')
+            tmp = ch - 'a' + 10;
+        else if (ch >= 'A' && ch <= 'F')
+            tmp = ch - 'A' + 10;
+        else
+            continue;
+
+        if(odd_digit)
+        {
+            --result;
+            *result = static_cast<T>(tmp);
+            odd_digit = false;
+        }
+        else
+        {
+            *result |= static_cast<T>(tmp << 4);
+            odd_digit = true;
+        }
+    }
+
+    unsigned char removeCount = result - static_cast<T *>(out.data());
+    for(int i=0; i<removeCount; i++)
+        out.erase(out.begin());
+
+    return out;
 }
 
 }
