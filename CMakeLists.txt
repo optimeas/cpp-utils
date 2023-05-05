@@ -9,6 +9,7 @@ set(HEADERS
     include/cpp-utils/hexdump.hpp
     include/cpp-utils/stringutils.hpp
     include/cpp-utils/base64.hpp
+    include/cpp-utils/timeutils.hpp
 )
 
 set(SOURCES
@@ -16,6 +17,7 @@ set(SOURCES
     loggingstdout.cpp
     stringutils.cpp
     base64.cpp
+    timeutils.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
