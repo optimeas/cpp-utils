@@ -14,6 +14,7 @@ set(HEADERS
 set(SOURCES
     logging.cpp
     loggingstdout.cpp
+    stringutils.cpp
     base64.cpp
 )
 

@@ -56,30 +56,7 @@ static inline std::string trim_copy(std::string s)
     return s;
 }
 
-
-//std::string simpleCase(const std::string& text)
-std::string simpleCase(std::string_view text)
-{
-    std::stringstream result;
-    bool newwrd = true;
-
-    for(const auto ch : text)
-    {
-        newwrd = newwrd || std::isspace(ch) || (ch == '-');
-        if (std::isalpha(ch))
-            if(newwrd)
-            {
-                result << static_cast<char>(std::toupper(ch));
-                newwrd = false;
-            }
-            else
-                result << static_cast<char>(std::tolower(ch));
-        else
-            result << ch;
-    }
-
-    return result.str();
-}
+std::string simpleCase(std::string_view text);
 
 template<typename T>
 std::vector<T> vectorFromHex(std::string_view hexString)
