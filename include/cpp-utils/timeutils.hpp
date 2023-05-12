@@ -5,7 +5,7 @@
 namespace cu
 {
 
-std::string getCurrentTimestampUtcIso8601();
-std::string getCurrentTimestampUtcString(bool withMilliSeconds = false);
+std::string getCurrentTimestampUtcIso8601(bool withNanoSeconds = false);
+std::string getCurrentTimestampUtcFilename(bool withMilliSeconds = false);
 
 }
