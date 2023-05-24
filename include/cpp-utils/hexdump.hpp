@@ -19,8 +19,8 @@ template <typename T, T RowSize, bool ShowAscii>
 class CustomHexdumpBase
 {
 public:
-    CustomHexdumpBase(unsigned char* data, T length) :
-        mData(static_cast<unsigned char*>(data)), mLength(length) { }
+    CustomHexdumpBase(const unsigned char* data, T length) :
+        mData(static_cast<const unsigned char*>(data)), mLength(length) { }
 
     T getLength() const { return mLength; }
     unsigned char getData(const T& i) const { return mData[i]; }
@@ -34,7 +34,7 @@ template <std::size_t RowSize, bool ShowAscii>
 class CustomHexdump : public CustomHexdumpBase<std::size_t, RowSize, ShowAscii>
 {
 public:
-    CustomHexdump(unsigned char* data, std::size_t length) : CustomHexdumpBase<std::size_t, RowSize, ShowAscii>(data, length) {}
+    CustomHexdump(const unsigned char* data, std::size_t length) : CustomHexdumpBase<std::size_t, RowSize, ShowAscii>(data, length) {}
 };
 
 template <typename T, T RowSize, bool ShowAscii>
