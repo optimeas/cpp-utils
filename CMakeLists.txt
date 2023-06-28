@@ -10,6 +10,7 @@ set(HEADERS
     include/cpp-utils/stringutils.hpp
     include/cpp-utils/base64.hpp
     include/cpp-utils/timeutils.hpp
+    include/cpp-utils/timedthresholdcounter.hpp
 )
 
 set(SOURCES
@@ -18,6 +19,7 @@ set(SOURCES
     stringutils.cpp
     base64.cpp
     timeutils.cpp
+    timedthresholdcounter.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})

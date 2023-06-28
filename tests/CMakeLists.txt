@@ -9,6 +9,7 @@ set(SOURCES
     hexdump_tests.cpp
     stringutils_tests.cpp
     base64_tests.cpp
+    timedthresholdcounter_tests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
