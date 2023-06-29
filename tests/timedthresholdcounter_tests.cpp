@@ -92,6 +92,6 @@ TEST(TimedThresholdCounter, Bouncing)
     counter.increment();
     EXPECT_FALSE(counter.isBouncing());
 
-    EXPECT_TRUE(counter.isThresholdExceeded());
-    EXPECT_EQ(counter.value(), 3);
+    EXPECT_FALSE(counter.isThresholdExceeded());
+    EXPECT_EQ(counter.value(), 2);
 }

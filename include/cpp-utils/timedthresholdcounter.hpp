@@ -34,9 +34,9 @@ public:
 
 private:
     bool m_enabled{true};
+    bool m_bouncing{false};
     uint32_t m_counter{0};
     std::chrono::time_point<std::chrono::steady_clock> m_timePointLastIncrement;
-    std::chrono::time_point<std::chrono::steady_clock> m_timePointSecondLastIncrement;
     std::chrono::duration<double> m_debounceTime{ };
     std::chrono::duration<double> m_thresholdTimeWindow{ };
     uint32_t m_threshold{0};

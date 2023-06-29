@@ -25,27 +25,34 @@ void TimedThresholdCounter::increment()
     if(!m_enabled)
         return;
 
+    m_bouncing = false;
     auto now = std::chrono::steady_clock::now();
+
+    if(std::chrono::duration_cast<std::chrono::milliseconds>(m_timePointLastIncrement.time_since_epoch()).count() > 0)
+    {
+        if(((now - m_timePointLastIncrement) < m_debounceTime))
+        {
+            m_bouncing = true;
+            return;
+        }
+    }
 
     if((m_thresholdTimeWindow.count() > 0) && ((now - m_timePointLastIncrement) > m_thresholdTimeWindow))
         m_counter = 0;
 
     m_counter++;
-    m_timePointSecondLastIncrement = m_timePointLastIncrement;
-    m_timePointLastIncrement = std::chrono::steady_clock::now();
+    m_timePointLastIncrement = now;
 }
 
 void TimedThresholdCounter::clear()
 {
     m_counter = 0;
+    m_bouncing = false;
 }
 
 bool TimedThresholdCounter::isBouncing()
 {
-    if(std::chrono::duration_cast<std::chrono::milliseconds>(m_timePointLastIncrement.time_since_epoch()).count() == 0)
-        return false;
-
-    return !((m_timePointLastIncrement - m_timePointSecondLastIncrement) > m_debounceTime);
+    return m_bouncing;
 }
 
 bool TimedThresholdCounter::isThresholdExceeded()
