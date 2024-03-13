@@ -44,16 +44,16 @@ TEST(StringUtils, simpleCase)
     EXPECT_EQ(cu::simpleCase("content-type"), "Content-Type");
 }
 
-TEST(StringUtils, vectorFromHex)
+TEST(StringUtils, hexDecode)
 {
     std::string hexString = "09e1c5f70a65ac519458e7e53f36";
     std::vector<unsigned char> expectVectorUnsignedChar {0x09, 0xe1, 0xc5, 0xf7, 0x0a, 0x65, 0xac, 0x51, 0x94, 0x58, 0xe7, 0xe5, 0x3f, 0x36};
     std::vector<std::byte> expectVectorStdByte {std::byte{0x09}, std::byte{0xe1}, std::byte{0xc5}, std::byte{0xf7}, std::byte{0x0a}, std::byte{0x65}, std::byte{0xac},
         std::byte{0x51}, std::byte{0x94}, std::byte{0x58}, std::byte{0xe7}, std::byte{0xe5}, std::byte{0x3f}, std::byte{0x36}};
 
-    std::vector<unsigned char> vectorUnsignedChar = cu::vectorFromHex<unsigned char>(hexString);
+    std::vector<unsigned char> vectorUnsignedChar = cu::hexDecode<unsigned char>(hexString);
     EXPECT_THAT(vectorUnsignedChar, testing::ElementsAreArray(expectVectorUnsignedChar.data(), expectVectorUnsignedChar.size()));
 
-    std::vector<std::byte> vectorStdByte = cu::vectorFromHex<std::byte>(hexString);
+    std::vector<std::byte> vectorStdByte = cu::hexDecode<std::byte>(hexString);
     EXPECT_THAT(vectorStdByte, testing::ElementsAreArray(expectVectorStdByte.data(), expectVectorStdByte.size()));
 }

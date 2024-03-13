@@ -59,7 +59,7 @@ static inline std::string trim_copy(std::string s)
 std::string simpleCase(std::string_view text);
 
 template<typename T>
-std::vector<T> vectorFromHex(std::string_view hexString)
+std::vector<T> hexDecode(std::string_view hexString)
 {
     std::vector<T> out;
     out.resize((hexString.length() +1)/ 2);
