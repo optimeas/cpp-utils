@@ -12,6 +12,7 @@ set(HEADERS
     include/cpp-utils/timeutils.hpp
     include/cpp-utils/timedthresholdcounter.hpp
     include/cpp-utils/statemachine.hpp
+    include/cpp-utils/uuid.hpp
 )
 
 set(SOURCES

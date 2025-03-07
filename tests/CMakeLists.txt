@@ -10,6 +10,7 @@ set(SOURCES
     stringutils_tests.cpp
     base64_tests.cpp
     timedthresholdcounter_tests.cpp
+    uuid_tests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
