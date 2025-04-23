@@ -26,4 +26,21 @@ std::string simpleCase(std::string_view text)
     return result.str();
 }
 
+std::string fileToString(const std::string &fullPath)
+{
+    std::ifstream file(fullPath);
+    if(file.is_open())
+    {
+        std::string line;
+        std::getline(file, line);
+        file.close();
+
+        cu::trim(line);
+        if(!line.empty())
+            return line;
+    }
+
+    return "";
+}
+
 }

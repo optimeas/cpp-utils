@@ -13,6 +13,7 @@ set(HEADERS
     include/cpp-utils/timedthresholdcounter.hpp
     include/cpp-utils/statemachine.hpp
     include/cpp-utils/uuid.hpp
+    include/cpp-utils/mac.hpp
 )
 
 set(SOURCES
@@ -22,6 +23,7 @@ set(SOURCES
     base64.cpp
     timeutils.cpp
     timedthresholdcounter.cpp
+    mac.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})

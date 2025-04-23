@@ -5,6 +5,7 @@
 #include <locale>
 #include <sstream>
 #include <vector>
+#include <fstream>
 
 namespace cu
 {
@@ -99,5 +100,7 @@ std::vector<T> hexDecode(std::string_view hexString)
 
     return out;
 }
+
+std::string fileToString(const std::string &fullPath);
 
 }
