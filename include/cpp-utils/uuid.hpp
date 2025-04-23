@@ -48,6 +48,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
+#include <cpp-utils/mac.hpp>
+
 #include <stdint.h>
 #include <stdio.h>     // for size_t; should be stddef.h instead; however, clang+archlinux fails when compiling it (@Travis-Ci)
 #include <sys/types.h> // for uint32_t; should be stdint.h instead; however, GCC 5 on OSX fails when compiling it (See issue #11)
@@ -603,30 +606,8 @@ namespace cu {
     })
 
     $linux({
-        struct ifaddrs* ifaphead;
-        if (getifaddrs(&ifaphead) == -1) return $no("cannot get network adapter list") false;
-
-        bool foundAdapter = false;
-        for (struct ifaddrs* ifap = ifaphead; ifap; ifap = ifap->ifa_next)
-        {
-            struct ifreq ifr;
-            int s = socket(PF_INET, SOCK_DGRAM, 0);
-            if (s == -1) continue;
-
-            if (std::strcmp("lo", ifap->ifa_name) == 0) { close(s); continue;}  // loopback address is zero
-
-            std::strcpy(ifr.ifr_name, ifap->ifa_name);
-            int rc = ioctl(s, SIOCGIFHWADDR, &ifr);
-            close(s);
-            if (rc < 0) continue;
-            struct sockaddr* sa = reinterpret_cast<struct sockaddr*>(&ifr.ifr_addr);
-            _node.resize( sizeof(sa->sa_data) );
-            std::memcpy(_node.data(), sa->sa_data, _node.size() );
-            foundAdapter = true;
-            break;
-        }
-        freeifaddrs(ifaphead);
-        if (!foundAdapter) return $no("cannot determine MAC address (no suitable network adapter found)") false;
+        std::vector<unsigned char> mac = cu::getMacAddressAsVector();
+        _node = mac;
         return true;
 
     })
@@ -694,7 +675,7 @@ namespace cu {
         // Number of 100-ns intervals since 00:00:00.00 15 October 1582; [ref] uuid.py
         uint64_t ns100_intervals = get_time( 0x01b21dd213814000ULL );
         uint16_t clock_seq = (uint16_t)( ns100_intervals & 0x3fff );  // 14-bits max
-        uint64_t mac = get_any_mac48();                               // 48-bits max
+        static uint64_t mac = get_any_mac48();                        // 48-bits max
 
         uint32_t time_low = ns100_intervals & 0xffffffff;
         uint16_t time_mid = (ns100_intervals >> 32) & 0xffff;
@@ -732,7 +713,7 @@ namespace cu {
         uint64_t ns100_intervals = get_time( 0 );
         uint64_t pid = $windows( _getpid() ) $welse( getpid() );
         uint16_t pid16 = (uint16_t)( pid & 0xffff ); // 16-bits max
-        uint64_t mac = get_any_mac48();              // 48-bits max
+        static uint64_t mac = get_any_mac48();       // 48-bits max
 
         uint32_t time_low = ns100_intervals & 0xffffffff;
         uint16_t time_mid = (ns100_intervals >> 32) & 0xffff;
