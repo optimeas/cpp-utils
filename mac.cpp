@@ -75,11 +75,10 @@ std::string getMacAddressAsString()
 
     if(macAddress.empty())
     {
-        int i, randomValue;
         srand(time(NULL) + getpid());
-        for (i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
-            randomValue = rand() % 256;
+            int randomValue = rand() % 256;
             macAddress.append((std::stringstream{} << std::uppercase << std::setfill('0') << std::setw(2) << std::hex << randomValue).str());
         }
     }
