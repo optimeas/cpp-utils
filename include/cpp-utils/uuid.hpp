@@ -135,6 +135,7 @@ namespace std {
 #include <cstring>
 #include <ctime>
 
+#include <atomic>
 #include <iomanip>
 #include <random>
 #include <sstream>
@@ -490,11 +491,18 @@ namespace cu {
         uuid_time = uuid_time + (tp.tv_nsec / 100);
 
         // If the clock looks like it went backwards, or is the same, increment it.
-        static uint64_t last_uuid_time = 0;
-        if( last_uuid_time >= uuid_time )
-            uuid_time = ++last_uuid_time;
-        else
-            last_uuid_time = uuid_time;
+        // The read-modify-write must be a single atomic step: uuid1() is called from
+        // several threads (every smartCORE module raising an alarm generates its UUID
+        // in its own thread). A lost update here hands out the same UUID twice, and a
+        // duplicate is silently dropped by AlarmManager instead of becoming a message.
+        static std::atomic<uint64_t> last_uuid_time{0};
+        uint64_t prev_uuid_time = last_uuid_time.load( std::memory_order_relaxed );
+        uint64_t next_uuid_time;
+        do {
+            next_uuid_time = ( prev_uuid_time >= uuid_time ) ? ( prev_uuid_time + 1 ) : uuid_time;
+        } while( !last_uuid_time.compare_exchange_weak( prev_uuid_time, next_uuid_time,
+                                                        std::memory_order_relaxed ) );
+        uuid_time = next_uuid_time;
 
         uuid_time = uuid_time + offset;
 
